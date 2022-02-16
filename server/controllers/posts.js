@@ -11,6 +11,20 @@ export const getPosts = async (req, res) =>{
    }
 }
 
+export const getPostsBySearch = async (req, res) => {
+  const { searchQuery, tags } = req.query;
+
+  try {
+      const title = new RegExp(searchQuery, 'i');
+
+      const posts = await PostMessage.find({ $or: [ { title }, { tags: { $in: tags.split(',') } } ]});
+
+      res.json({ data: posts });
+  } catch (error) {    
+      res.status(404).json({ message: error.message });
+  }
+}
+
 export const createPost = async (req, res) =>{
     const post = req.body
 
@@ -27,28 +41,39 @@ export const createPost = async (req, res) =>{
 export const updatePost = async (req, res) => {
   const { id } = req.params;
   
-  // console.log(id) 
+ try{
+    // console.log(id) 
   
   if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
 
   const updatedPost = await PostMessage.findByIdAndUpdate(id, req.body, { new: true });
 
   res.json(updatedPost);
+
+ }catch(error){
+  res.status(404).json({Message: error.message})
+ }
 }
 
 export const deletePost = async (req, res) => {
   const { id } = req.params;
 
+try{
   if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
 
   await PostMessage.findByIdAndRemove(id);
 
   res.json({ message: "Post deleted successfully." });
+
+}catch(error){
+  res.status(404).json({Message: error.message})
+}
 }
 
 export const likePost = async (req, res) => {
   const { id } = req.params;
 
+ try{
   if (!req.userId) return res.json({ message: "Unauthenticated" });
 
   if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
@@ -64,6 +89,10 @@ export const likePost = async (req, res) => {
   }
   const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true });
   res.json(updatedPost);
+
+ }catch(error){
+  res.status(404).json({Message: error.message})
+ }
 }
 
 
