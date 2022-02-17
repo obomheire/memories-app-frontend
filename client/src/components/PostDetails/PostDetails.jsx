@@ -18,15 +18,13 @@ const Post = () => {
     dispatch(getPost(id));
   }, [id]);
 
-  // useEffect(() => {
-  //   if (post) {
-  //     dispatch(getPostsBySearch({ search: 'none', tags: post?.tags.join(',') }));
-  //   }
-  // }, [post]);
+  useEffect(() => {
+    if (post) {
+      dispatch(getPostsBySearch({ search: 'none', tags: post?.tags.join(',') }));
+    }
+  }, [post]);
 
   if (!post) return null;
-
-  const openPost = (_id) => navigate(`/posts/${_id}`);
 
   if (isLoading) {
     return (
@@ -36,7 +34,9 @@ const Post = () => {
     );
   }
 
-  // const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
+  const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
+
+  const openPost = (_id) => navigate(`/posts/${_id}`);
 
   return (
     <Paper style={{ padding: '20px', borderRadius: '15px' }} elevation={6}>
@@ -57,7 +57,7 @@ const Post = () => {
           <img className={classes.media} src={post.selectedFile || "https://images.theconversation.com/files/76631/original/image-20150331-1256-mz95ed.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=926&fit=clip"} alt={post.title} />
         </div>
       </div>
-      {/* {!!recommendedPosts.length && (
+      {recommendedPosts.length && (
         <div className={classes.section}>
           <Typography gutterBottom variant="h5">You might also like:</Typography>
           <Divider />
@@ -68,12 +68,12 @@ const Post = () => {
                 <Typography gutterBottom variant="subtitle2">{name}</Typography>
                 <Typography gutterBottom variant="subtitle2">{message}</Typography>
                 <Typography gutterBottom variant="subtitle1">Likes: {likes.length}</Typography>
-                <img src={selectedFile} width="200px" />
+                <img src={selectedFile} width="200px" alt=' ' />
               </div>
             ))}
           </div>
         </div>
-      )} */}
+      )}
     </Paper>
   );
 };
