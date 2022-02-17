@@ -1,4 +1,4 @@
-import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@material-ui/core/';
+import { Card, CardActions, CardContent, CardMedia, Button, Typography, ButtonBase} from '@material-ui/core/';
 import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -7,10 +7,12 @@ import moment from 'moment';
 import useStyles from './styles'
 import { useDispatch } from 'react-redux'
 import { deletePost, likePost} from '../../../actions/posts';
+import { useNavigate } from 'react-router-dom'
 
 const Post = ({ post, setCurrentId }) => {
     const classes = useStyles()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const user = JSON.parse(localStorage.getItem('profile'));
 
@@ -32,9 +34,12 @@ const Post = ({ post, setCurrentId }) => {
       return "https://images.theconversation.com/files/76631/original/image-20150331-1256-mz95ed.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=926&fit=clip"
   
   }
+
+  const openPost = () => navigate(`/posts/${post._id}`)
     
     return (
         <Card className={classes.card} raised elevation={6}>
+          <ButtonBase className={classes.cardAction} onClick={openPost} >
         <CardMedia className={classes.media} image={defaultImage(post.selectedFile)} title={post.title} />
         <div className={classes.overlay}>
           <Typography variant="h6">{post.name}</Typography>
@@ -54,7 +59,8 @@ const Post = ({ post, setCurrentId }) => {
       <CardContent>
       <Typography variant="body2" color="textSecondary" component="p">{post.message}</Typography>
       </CardContent>
-      <CardActions className={classes.cardActions}>
+      </ButtonBase>
+      <CardActions className={classes.cardAction}>
       <Button size="small" color="primary" disabled={!user?.result} onClick={() => dispatch(likePost(post._id))}>
           <Likes />
         </Button>
