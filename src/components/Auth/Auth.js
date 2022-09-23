@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import { Avatar, Button, Paper, Grid, Typography, Container} from '@material-ui/core';
 // import { useHistory } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
@@ -61,7 +61,6 @@ const initialState = { firstName: '', lastName: '', email: '', password: '', con
         console.log(error)
         console.log('Google Sign In was unsuccessful, Please try again later!')
       }
-
 
   return (
     <Container component="main" maxWidth="xs">
