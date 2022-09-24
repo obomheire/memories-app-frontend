@@ -69,7 +69,7 @@ const initialState = { firstName: '', lastName: '', email: '', password: '', con
       <Avatar className={classes.avatar}>
         <LockOutlinedIcon />
       </Avatar>
-      <Typography component="h1" variant="h5">{ isSignup ? 'Sign up' : 'Sign in' }</Typography>
+      <Typography component="h1" variant="h5">{ isSignup ? 'Sign up' : 'Sign In' }</Typography>
       <form className={classes.form} onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           { isSignup && (
